@@ -1,0 +1,11 @@
+services:
+  db:
+    image: mysql
+    container_name: K9DataBase
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - 3306:3306
+
+  
