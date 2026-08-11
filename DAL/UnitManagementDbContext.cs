@@ -22,6 +22,18 @@ namespace UnitApi9K.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Dog>()
+                        .HasOne(d=> d.Handler)
+                        .WithMany(h=> h.Dogs)
+                        .HasForeignKey(d=> d.HandlerId)
+                        .OnDelete(DeleteBehavior.SetNull);
+            
+            modelBuilder.Entity<TrainingSession>()
+                        .HasOne(t=> t.Dog)
+                        .WithMany(d=> d.TrainingSessions)
+                        .HasForeignKey(t=> t.DogId)
+                        .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
