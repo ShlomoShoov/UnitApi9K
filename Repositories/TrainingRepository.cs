@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using UnitApi9K.DAL;
 using UnitApi9K.Exceptions.DogsExceptions;
@@ -71,6 +72,59 @@ namespace UnitApi9K.Repositories
             };
 
 
+
+        }
+
+
+        public async Task<IEnumerable<TrainingSessionsDetailedDTO>> GetTrainingSessionsAsync()
+        {
+            IQueryable< TrainingSessionsDetailedDTO> query = _context.TrainingSessions.Select(t=> new TrainingSessionsDetailedDTO
+            {
+                Id = t.Id,
+                SessionDate = t.SessionDate,
+                Evaluator = t.Evaluator,
+                DurationMinutes = t.DurationMinutes,
+                Passed = t.Passed,
+                PerformanceScore = t.PerformanceScore,
+                TrainingType = t.TrainingType,
+                DogName = t.Dog.Name,
+                DogSpecialty = t.Dog.Specialty,
+                DogHandlerFullName = t.Dog.Handler  == null ? null : t.Dog.Handler.FullName
+            });
+
+            return await query.ToListAsync();
+        }
+
+
+        public async Task<TrainingSessionPageDTO<TrainingSessionPageItemDTO>> GetTrainingSessionPageAsync(int page, int pageSize)
+        {
+            int itemsCount = await _context.TrainingSessions.CountAsync();
+
+            TrainingSessionPageDTO<TrainingSessionPageItemDTO> pageResult = new TrainingSessionPageDTO<TrainingSessionPageItemDTO>
+            {
+                ItemsCount = itemsCount,
+                Page = page,
+                PagesCount = (int)Math.Ceiling((double)itemsCount / pageSize)
+            };
+
+            int skip = (page -1 ) * pageSize;
+
+            ICollection<TrainingSessionPageItemDTO> Items = await  _context.TrainingSessions
+                                                                    .OrderByDescending(t=> t.SessionDate)
+                                                                    .Skip(skip)
+                                                                    .Take(pageSize)
+                                                                    .Select(t=> new TrainingSessionPageItemDTO
+                                                                    {
+                                                                        Id  = t.Id,
+                                                                        SessionDate = t.SessionDate,
+                                                                        PerformanceScore = t.PerformanceScore,
+                                                                        DogName = t.Dog.Name
+                                                                    }).ToListAsync();
+            pageResult.Items = Items;
+            pageResult.PageSize = Items.Count;
+
+            return pageResult;                                                         
+            
 
         }
     }

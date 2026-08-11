@@ -43,5 +43,27 @@ namespace UnitApi9K.Controllers
         
           
         }
+        [HttpGet("detailed")]
+        public async Task<ActionResult<IEnumerable<TrainingSessionsDetailedDTO>>> GetTrainingSessionsAsync()
+        {
+            return Ok(await _repository.GetTrainingSessionsAsync());
+        }
+
+        [HttpGet("paged")]
+        public async Task<ActionResult<TrainingSessionPageDTO<TrainingSessionPageItemDTO>>> GetTrainingSessionPageAsync(int page = 1, int pageSize = 10)
+        {
+            if (!ValidPageParameters(page, pageSize))
+            {
+                return BadRequest();
+            }
+            return Ok(await _repository.GetTrainingSessionPageAsync(page, pageSize));
+        }
+
+        private static bool ValidPageParameters(int page , int pageSize)
+        {
+            return page >= 1 && pageSize >= 5 && pageSize <= 50;
+        }
+
+
     }
 }

@@ -9,5 +9,9 @@ namespace UnitApi9K.Repositories
     public interface ITrainingRepository
     {
         public  Task<TrainingSessionDTO> CreateAsync(CreateTrainingSessionDTO newTrainingSession);
+        public  Task<IEnumerable<TrainingSessionsDetailedDTO>> GetTrainingSessionsAsync();
+        public  Task<TrainingSessionPageDTO<TrainingSessionPageItemDTO>> GetTrainingSessionPageAsync(int page, int pageSize);
+
+
     }
 }
