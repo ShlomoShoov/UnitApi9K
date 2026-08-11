@@ -58,6 +58,10 @@ namespace UnitApi9K.Controllers
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<SearchDogDTO>>> SearchDogsAsync(string? specialty, string? status)
         {
+            if (!IsValidSearchParameters(specialty, status))
+            {
+                return BadRequest();
+            }
             return Ok(await _repository.SearchDogsAsync(specialty, status));
         }
         [HttpGet("with-handler")]
@@ -70,6 +74,17 @@ namespace UnitApi9K.Controllers
         public async Task<ActionResult<IEnumerable<DogWithPerformanceSummaryDTO>>> GetDogWithPerformancesAsync()
         {
             return Ok(await _repository.GetDogWithPerformancesAsync() );
+        }
+
+        private static bool IsValidSearchParameters(string? specialty, string? status)
+
+        {
+            List<string> allowedSpecialty =  ["ExplosiveDetection", "NarcoticsDetection", "Tracking", "Attack", "Search"];
+            bool specialtyCorrect = string.IsNullOrEmpty(specialty) || allowedSpecialty.Contains(specialty);
+            List<string> allowedStatuses = ["Active", "InTraining", "Retired"];
+            bool statusCorrect = string.IsNullOrEmpty(status) || allowedStatuses.Contains(status);
+
+            return specialtyCorrect && statusCorrect;
         }
 
 

@@ -28,7 +28,7 @@ namespace UnitApi9K.Models
         public string Specialty { get; set; } = string.Empty;
 
 
-        [AllowedValues(["Active", "InTraining", "Retired",null])]
+        [AllowedValues(["Active", "InTraining", "Retired"])]
         public string Status { get; set; } = string.Empty;
         public static string DefaultStatus = "InTraining";
 

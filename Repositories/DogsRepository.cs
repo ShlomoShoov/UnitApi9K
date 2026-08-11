@@ -27,7 +27,7 @@ namespace UnitApi9K.Repositories
                 throw new MicrochipIdExistsException(newDog.MicrochipId);
             }
 
-            bool dateOfBirthNotInPast = newDog.DateOfBirth >= DateTime.Now;
+            bool dateOfBirthNotInPast = newDog.DateOfBirth >= DateTime.Now.AddDays(-1);
     
 
             if (dateOfBirthNotInPast)
