@@ -130,7 +130,8 @@ namespace UnitApi9K.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HandlerId");
+                    b.HasIndex("HandlerId")
+                        .IsUnique();
 
                     b.HasIndex("MicrochipId")
                         .IsUnique();
@@ -152,8 +153,8 @@ namespace UnitApi9K.Migrations
             modelBuilder.Entity("UnitApi9K.Models.Dog", b =>
                 {
                     b.HasOne("UnitApi9K.Models.DBModels.Handler", "Handler")
-                        .WithMany("Dogs")
-                        .HasForeignKey("HandlerId")
+                        .WithOne("Dog")
+                        .HasForeignKey("UnitApi9K.Models.Dog", "HandlerId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Handler");
@@ -161,7 +162,7 @@ namespace UnitApi9K.Migrations
 
             modelBuilder.Entity("UnitApi9K.Models.DBModels.Handler", b =>
                 {
-                    b.Navigation("Dogs");
+                    b.Navigation("Dog");
                 });
 
             modelBuilder.Entity("UnitApi9K.Models.Dog", b =>

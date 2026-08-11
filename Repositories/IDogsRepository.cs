@@ -10,5 +10,10 @@ namespace UnitApi9K.Repositories
     {
         public  Task<DogDTO> GetByIdAsync(int id);
         public  Task<DogDTO> CreateDogAsync(CreateDogDTO newDog);
+        public  Task<IEnumerable<SearchDogDTO>> SearchDogsAsync(string? specialty, string? status);
+        public Task<IEnumerable<DogWithHandlerDTO>> GetDogsWithHandlerAsync();
+        public  Task<IEnumerable<DogWithPerformanceSummaryDTO>> GetDogWithPerformancesAsync();
+
+
     }
 }

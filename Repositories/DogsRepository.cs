@@ -63,6 +63,66 @@ namespace UnitApi9K.Repositories
         }
 
 
+
+        // first query
+
+        public async Task<IEnumerable<SearchDogDTO>> SearchDogsAsync(string? specialty, string? status)
+        {
+            IQueryable<Dog> query = _context.Dogs;
+
+            if (!string.IsNullOrEmpty(specialty))
+            {
+                query = query.Where(d=> d.Specialty == specialty);
+            }
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                query = query.Where(d => d.Status == status);
+            }
+
+            return await query.Select(d=> new SearchDogDTO
+            {
+                Id = d.Id,
+                Name = d.Name,
+                Breed = d.Breed,
+                Specialty = d.Specialty,
+                Status = d.Status
+            }).ToListAsync();
+        }
+
+        public async Task<IEnumerable<DogWithHandlerDTO>> GetDogsWithHandlerAsync()
+        {
+            IQueryable<DogWithHandlerDTO> query = _context.Dogs.Select(d=> new DogWithHandlerDTO
+            {
+                Id = d.Id,
+                Name = d.Name,
+                Breed = d.Breed,
+                Specialty = d.Specialty,
+                Status = d.Status,
+                HandlerFullName = d.Handler == null ? null : d.Handler.FullName,
+                HandlerRank = d.Handler == null ? null : d.Handler.Rank
+            });
+
+            return await query.ToListAsync();
+        }
+
+
+        public async Task<IEnumerable<DogWithPerformanceSummaryDTO>> GetDogWithPerformancesAsync()
+        {
+            IQueryable< DogWithPerformanceSummaryDTO> query = _context.Dogs.Select(d=> new DogWithPerformanceSummaryDTO
+            {
+                Id = d.Id,
+                Name = d.Name,
+                Specialty = d.Specialty,
+                TrainingSessionCount = d.TrainingSessions.Count,
+                ScoreAverage = d.TrainingSessions.Average(t=> t.PerformanceScore)
+            });
+            return await query.ToListAsync();
+        }
+
+
+
+
         private static DogDTO DtoizeDog(Dog dog)
         {
 

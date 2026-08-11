@@ -99,7 +99,8 @@ namespace UnitApi9K.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Dogs_HandlerId",
                 table: "Dogs",
-                column: "HandlerId");
+                column: "HandlerId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Dogs_MicrochipId",

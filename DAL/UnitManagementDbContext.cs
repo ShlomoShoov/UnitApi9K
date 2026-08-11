@@ -25,8 +25,8 @@ namespace UnitApi9K.DAL
 
             modelBuilder.Entity<Dog>()
                         .HasOne(d=> d.Handler)
-                        .WithMany(h=> h.Dogs)
-                        .HasForeignKey(d=> d.HandlerId)
+                        .WithOne(h=> h.Dog)
+                        .HasForeignKey<Dog>(d=> d.HandlerId)
                         .OnDelete(DeleteBehavior.SetNull);
             
             modelBuilder.Entity<TrainingSession>()

@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using UnitApi9K.Exceptions.DogsExceptions;
+using UnitApi9K.Exceptions.TrainingSessionsExceptions;
 using UnitApi9K.Models.DTOs.TrainingDTOs;
 using UnitApi9K.Repositories;
 
@@ -19,9 +22,26 @@ namespace UnitApi9K.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TrainingSessionDTO>> CreateAsync(CreateTrainingSessionDTO newTrainingSession)
+        public async Task<IActionResult> CreateAsync(CreateTrainingSessionDTO newTrainingSession)
         {
-            return (await _repository.CreateAsync(newTrainingSession));
+            try
+            {
+                return StatusCode(StatusCodes.Status201Created ,await _repository.CreateAsync(newTrainingSession));
+            }
+            catch (DogNotFoundException)
+            {
+                return NotFound();
+            }
+            catch(DogNotInPossibleStatusException ex)
+            {
+                return BadRequest();
+            }
+            catch (TrainingInFutureDateException)
+            {
+                return BadRequest();
+            }
+        
+          
         }
     }
 }

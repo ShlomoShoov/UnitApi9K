@@ -26,6 +26,6 @@ namespace UnitApi9K.Models.DBModels
         [StringLength(100)]
         public string BaseAssigned { get; set; } = string.Empty;
 
-        public ICollection<Dog> Dogs { get; set; } = [];
+        public Dog? Dog { get; set; } 
     }
 }
