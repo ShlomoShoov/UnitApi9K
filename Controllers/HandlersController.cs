@@ -17,10 +17,15 @@ namespace UnitApi9K.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> Test()
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteHandler(int id)
         {
-            return Ok("hello");
+            bool deleted  = await _repository.DeleteHandlerAsync(id);
+            if (deleted)
+            {
+                return NoContent();
+            }
+            return NotFound();
         }
     }
 }

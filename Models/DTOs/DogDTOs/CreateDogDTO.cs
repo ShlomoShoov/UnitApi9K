@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using UnitApi9K.Models.DBModels;
 
-namespace UnitApi9K.Models
+namespace UnitApi9K.Models.DTOs.DogDTOs
 {
-    [Index(nameof(MicrochipId), IsUnique = true)]
-    public class Dog
+    public class CreateDogDTO
     {
-        public int Id { get; set; }
-
         [StringLength(50)]
         public string Name { get; set; } = string.Empty;
 
@@ -27,15 +22,11 @@ namespace UnitApi9K.Models
         [AllowedValues(["ExplosiveDetection", "NarcoticsDetection", "Tracking", "Attack", "Search"])]
         public string Specialty { get; set; } = string.Empty;
 
-
         [AllowedValues(["Active", "InTraining", "Retired",null])]
-        public string Status { get; set; } = string.Empty;
-        public static string DefaultStatus = "InTraining";
+        public string? Status { get; set; }
 
-        public int? HandlerId { get; set; }
-        public Handler? Handler { get; set; } 
 
-        public ICollection<TrainingSession> TrainingSessions = [];
+
 
     }
 }

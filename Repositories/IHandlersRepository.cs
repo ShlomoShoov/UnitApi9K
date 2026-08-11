@@ -7,6 +7,6 @@ namespace UnitApi9K.Repositories
 {
     public interface IHandlersRepository
     {
-        
+        public  Task<bool> DeleteHandlerAsync(int id);
     }
 }

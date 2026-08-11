@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using UnitApi9K.Models.DTOs.TrainingDTOs;
 using UnitApi9K.Repositories;
 
 namespace UnitApi9K.Controllers
@@ -17,10 +18,10 @@ namespace UnitApi9K.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> Test()
+        [HttpPost]
+        public async Task<ActionResult<TrainingSessionDTO>> CreateAsync(CreateTrainingSessionDTO newTrainingSession)
         {
-            return Ok("hello");
+            return (await _repository.CreateAsync(newTrainingSession));
         }
     }
 }
